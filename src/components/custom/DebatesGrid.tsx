@@ -2,6 +2,7 @@
 
 import { useDebateContractData } from "@/hooks/useDebateContractData";
 import { useConfig } from "wagmi";
+import { useRouter } from "next/navigation";
 import React from "react";
 // import GradientBlinds from "./GradientBlinds";
 
@@ -24,6 +25,7 @@ export interface DebateItem {
 const DebateGrid: React.FC = () => {
   const { data: contractData, debates, isLoading, error } = useDebateContractData();
   const config = useConfig();
+  const router = useRouter();
 
   // Transform the data to match our interface
   const transformedData: DebateItem[] = debates.map((debate, index) => {
@@ -96,7 +98,7 @@ const DebateGrid: React.FC = () => {
       {transformedData.map((debate) => (
         <div
           key={debate.id}
-          onClick={() => debate.url && window.open(debate.url, '_blank', 'noopener,noreferrer')}
+          onClick={() => router.push(`/${debate.id}`)}
           className="flex flex-col p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-300 dark:border-gray-700 shadow-md hover:shadow-lg cursor-pointer transition relative overflow-hidden"
           style={{ minHeight: 180 }}
         >
