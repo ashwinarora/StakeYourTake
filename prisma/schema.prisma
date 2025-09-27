@@ -15,12 +15,16 @@ datasource db {
 }
 
 model Debate {
-  id          Int        @id @default(autoincrement())
-  title       String     @db.VarChar(255)
-  description String     @db.Text
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  Evidence    Evidence[]
+  id             Int        @id @default(autoincrement())
+  title          String     @db.VarChar(255)
+  description    String     @db.Text
+  debateId       Int        @unique
+  asseturl       String?
+  chainId        Int
+  creationTxHash String     @db.VarChar(255)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  Evidence       Evidence[]
 }
 
 model Evidence {

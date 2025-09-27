@@ -1,0 +1,354 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			}
+		],
+		"name": "claim",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "voter",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Claimed",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "endTime",
+				"type": "uint64"
+			},
+			{
+				"internalType": "bool",
+				"name": "supportYes",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint128",
+				"name": "voteFee",
+				"type": "uint128"
+			}
+		],
+		"name": "createDebate",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "endTime",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "voteFee",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "supportYes",
+				"type": "bool"
+			}
+		],
+		"name": "DebateCreated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			}
+		],
+		"name": "finalize",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum StakeYourTake.Result",
+				"name": "result",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "yesPot",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "noPot",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "residual",
+				"type": "uint256"
+			}
+		],
+		"name": "Finalized",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "supportYes",
+				"type": "bool"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "voter",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "supportYes",
+				"type": "bool"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "newYesCount",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "newNoCount",
+				"type": "uint128"
+			}
+		],
+		"name": "Voted",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			}
+		],
+		"name": "withdrawResidual",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "debates",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			},
+			{
+				"internalType": "uint64",
+				"name": "endTime",
+				"type": "uint64"
+			},
+			{
+				"internalType": "uint128",
+				"name": "voteFee",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "yesCount",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "noCount",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint256",
+				"name": "yesPot",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "noPot",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "finalized",
+				"type": "bool"
+			},
+			{
+				"internalType": "enum StakeYourTake.Result",
+				"name": "result",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "residual",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "debateId",
+				"type": "uint256"
+			}
+		],
+		"name": "getVoteFee",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalDebates",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "voters",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "hasVoted",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "supportYes",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "hasClaimed",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
