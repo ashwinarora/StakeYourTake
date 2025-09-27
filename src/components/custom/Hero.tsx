@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { useState } from 'react'
-import CreateDebateModal from './create-debate-modal'
+import CreateDebateModal from './CreateDebateModal'
 
 function Hero() {
   const [createDebateModalOpen, setCreateDebateModalOpen] = useState(false)
