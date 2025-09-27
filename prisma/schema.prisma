@@ -28,14 +28,14 @@ model Debate {
 }
 
 model Evidence {
-  id        Int       @id @default(autoincrement())
-  assetUrl  String    @db.Text
-  content   String    @db.Text
-  debateId  Int
-  debate    Debate    @relation(fields: [debateId], references: [id])
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Comment   Comment[]
+  id         Int       @id @default(autoincrement())
+  assetUrl   String?   @db.Text
+  content    String    @db.Text
+  debateIdPg Int
+  debate     Debate    @relation(fields: [debateIdPg], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Comment    Comment[]
 }
 
 model Comment {
