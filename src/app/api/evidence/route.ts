@@ -23,8 +23,8 @@ export async function POST(request: Request) {
         if (!Number.isInteger(debateIdPgNum)) {
             return NextResponse.json({ error: "debateIdPg must be an integer" }, { status: 400 });
         }
-        // const derivedAddress = await recoverMessageAddress({message, signature})
-        const derivedAddress = "0x10cdc362Cf9737A172aA6803F2e968f4Cdb50761"
+        const derivedAddress = await recoverMessageAddress({message, signature})
+        // const derivedAddress = "0x10cdc362Cf9737A172aA6803F2e968f4Cdb50761"
         const contract = getSYTContract(chainId)
         const isVoted = await hasVoted(contract, debateId, derivedAddress)
         console.log("isVoted", isVoted)
@@ -36,6 +36,24 @@ export async function POST(request: Request) {
             assetUrl,
         })
         return NextResponse.json(evidence, { status: 201 });
+    } catch {
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}
+
+export async function GET(request: Request) {
+    try {
+        const { searchParams } = new URL(request.url);
+        const debateIdPg = searchParams.get("debateIdPg");
+        if (!debateIdPg) {
+            return NextResponse.json({ error: "debateIdPg is required" }, { status: 400 });
+        }
+        const debateIdPgNum = Number(debateIdPg);
+        if (!Number.isInteger(debateIdPgNum)) {
+            return NextResponse.json({ error: "debateIdPg must be an integer" }, { status: 400 });
+        }
+        const evidence = await DebateManager.getInstance().getEvidenceByDebateIdPg(debateIdPgNum);
+        return NextResponse.json(evidence, { status: 200 });
     } catch {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

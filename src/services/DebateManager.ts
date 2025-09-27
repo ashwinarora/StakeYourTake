@@ -68,6 +68,12 @@ class DebateManager {
             console.log(error)
         }
     }
+
+    async getEvidenceByDebateIdPg(debateIdPg: number) {
+        return await prisma.evidence.findMany({
+            where: { debateIdPg },
+        });
+    }
 }
 
 export default DebateManager;

@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import { CONTRACT_ABI, chainToContractAddress } from '@/constants'
 import { SupportedChainId } from '@/config/wagmi'
 import { formatUnits } from 'viem'
+import { useGetEvidenceByDebateIdPg } from '@/hooks/useGetEvidenceByDebateIdPg'
 
 export default function DebateDetailPage() {
   const params = useParams()
@@ -22,8 +23,10 @@ export default function DebateDetailPage() {
   const { data: debateContractData, debates: debatesData, isLoading, error, refetch } = useDebateContractData()
   const debate = debatesData.find(debate => debate.id === Number(params.id))
   const debateContract = debateContractData.find(d => d.debateId === debate?.debateId)
-  console.log({debateContractData, debatesData})
-  console.log({debate, debateContract})
+  // console.log({debateContractData, debatesData})
+  // console.log({debate, debateContract})
+
+  const { data: evidences, isLoading: isEvidenceLoading, isError: isEvidenceError, error: evidenceError } = useGetEvidenceByDebateIdPg(debate?.id)
 
   const { writeContractAsync } = useWriteContract()
   const publicClient = usePublicClient()
@@ -189,6 +192,86 @@ export default function DebateDetailPage() {
                     style={{ width: `${noPercent}%` }}
                   ></div>
                 </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Debate Timeline */}
+         <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
+              Debate Timeline
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-4 top-8 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700"></div>
+              
+              <div className="space-y-6">
+                {isEvidenceLoading && (
+                  <div className="text-gray-600 dark:text-gray-300">Loading timeline...</div>
+                )}
+
+                {!isEvidenceLoading && isEvidenceError && (
+                  <div className="text-red-600 dark:text-red-400">{(evidenceError as Error | undefined)?.message || 'Failed to load evidence'}</div>
+                )}
+
+                {!isEvidenceLoading && !isEvidenceError && (!evidences || evidences.length === 0) && (
+                  <div className="text-gray-600 dark:text-gray-300">No evidence submitted yet.</div>
+                )}
+
+                {!isEvidenceLoading && !isEvidenceError && evidences && evidences.length > 0 && (
+                  <>
+                    {([...evidences]
+                      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()))
+                      .map((ev, index, arr) => {
+                      const isLast = index === arr.length - 1
+                      return (
+                        <div key={ev.id} className="relative flex items-start space-x-4">
+                          {/* Icon with connecting line */}
+                          <div className="relative flex-shrink-0">
+                            <div className="w-8 h-8 rounded-full flex items-center justify-center text-indigo-600 bg-gray-100 dark:bg-gray-800 border-2 border-white dark:border-gray-900 z-10 relative">
+                              <ClockIcon className="w-5 h-5" />
+                            </div>
+                            {/* Connecting line to next item */}
+                            {!isLast && (
+                              <div className="absolute left-1/2 top-8 w-0.5 h-6 bg-gray-200 dark:bg-gray-700 transform -translate-x-1/2"></div>
+                            )}
+                          </div>
+
+                          <div className="flex-1 min-w-0 pb-6">
+                            <div className="flex items-center space-x-2">
+                              <span className="font-semibold text-gray-900 dark:text-white">
+                                Evidence submitted
+                              </span>
+                              <span className="text-sm text-gray-500 dark:text-gray-400">
+                                {new Date(ev.createdAt).toLocaleString()}
+                              </span>
+                            </div>
+
+                            {ev.content && (
+                              <p className="mt-2 text-gray-600 dark:text-gray-300">
+                                {ev.content}
+                              </p>
+                            )}
+
+                            {ev.assetUrl && (
+                              <div className="mt-3 flex space-x-2">
+                                <img
+                                  src={ev.assetUrl}
+                                  alt="Evidence"
+                                  className="w-52 h-52 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </>
+                )}
               </div>
             </div>
           </CardContent>
