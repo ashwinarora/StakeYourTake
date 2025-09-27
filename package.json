@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
     "@prisma/client": "^6.16.2",
     "@tanstack/react-query": "^5.90.2",
     "next": "15.5.4",
