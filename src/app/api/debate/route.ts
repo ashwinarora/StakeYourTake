@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
     try {
         const debates = await DebateManager.getInstance().getAllDebates();
         return NextResponse.json(debates, { status: 200 });
