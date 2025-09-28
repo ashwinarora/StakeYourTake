@@ -1,6 +1,7 @@
 "use client"
 
 import { useDebateContractData } from "@/hooks/useDebateContractData";
+import AddressName from "@/components/custom/AddressName";
 import { useConfig } from "wagmi";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -60,7 +61,7 @@ const DebateGrid: React.FC = () => {
       id: debate.id,
       title: debate.title,
       description: debate.description,
-      poster: contractInfo?.creator || 'Unknown',
+      poster: contractInfo?.creator || '',
       question: debate.title,
       stake: contractInfo ? formatAmount(contractInfo.voteFee) : `0 ${nativeAsset}`,
       url: debate.assetUrl || undefined,
@@ -103,7 +104,13 @@ const DebateGrid: React.FC = () => {
           style={{ minHeight: 180 }}
         >
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">{debate.poster}</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+              {debate.poster ? (
+                <AddressName address={debate.poster as `0x${string}`} />
+              ) : (
+                'Unknown'
+              )}
+            </h3>
             {debate.finalized && (
               <span className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">
                 Finalized

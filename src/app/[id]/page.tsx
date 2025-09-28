@@ -15,6 +15,7 @@ import { formatUnits } from 'viem'
 import { useGetEvidenceByDebateIdPg } from '@/hooks/useGetEvidenceByDebateIdPg'
 import { usePostEvidence } from '@/hooks/usePostEvidence'
 import { FileUploadFull } from '@/components/custom/FileUpload'
+import AddressName from '@/components/custom/AddressName'
 
 export default function DebateDetailPage() {
   const params = useParams()
@@ -35,10 +36,7 @@ export default function DebateDetailPage() {
   const [isVoting, setIsVoting] = useState<boolean>(false)
   const config = useConfig()
 
-  const shortenAddress = (address?: string) => {
-    if (!address) return 'Unknown'
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
-  }
+  // ENS handled via AddressName component
 
   const totalVotes = debateContract ? Number(debateContract.yesCount) + Number(debateContract.noCount) : 0
   const yesPercent = totalVotes > 0 && debateContract ? Math.round((Number(debateContract.yesCount) / totalVotes) * 100) : 0
@@ -171,7 +169,7 @@ export default function DebateDetailPage() {
             <div className="flex items-center space-x-4">
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white">
-                  {shortenAddress(debateContract?.creator)}
+                  <AddressName address={(debateContract?.creator as any) || undefined} />
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                   <ClockIcon className="w-4 h-4 mr-1" />

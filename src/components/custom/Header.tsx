@@ -3,6 +3,7 @@
 import React from 'react'
 import { useAccount, useConnect, useBalance, useDisconnect } from 'wagmi'
 import { useRouter } from 'next/navigation'
+import AddressName from './AddressName'
 
 function Header() {
   const router = useRouter()
@@ -52,11 +53,8 @@ function Header() {
                       ? `${Number(balanceData.formatted).toFixed(4)} ${balanceData.symbol}`
                       : ''}
                 </div>
-                <div
-                  className="rounded-md border border-neutral-700 bg-neutral-900/60 px-3 py-2 text-sm font-medium text-white"
-                  title={address || ''}
-                >
-                  {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ''}
+                <div className="rounded-md border border-neutral-700 bg-neutral-900/60 px-3 py-2 text-sm font-medium text-white">
+                  <AddressName address={address || undefined} />
                 </div>
                 <button
                   onClick={() => disconnect()}
