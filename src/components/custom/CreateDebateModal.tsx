@@ -23,6 +23,10 @@ import { SupportedChainId } from "@/config/wagmi"
 import { chainToContractAddress } from "@/constants"
 import { parseEther } from "viem"
 import { usePostDebate } from "@/hooks/usePostDebate"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { Calendar } from "../ui/calendar"
+import { cn } from "@/lib/utils"
+import { TimePicker } from "../ui/time-picker"
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -38,15 +42,15 @@ const formSchema = z.object({
         return false
       }
     }, { message: "Enter a valid amount like 0.00001" }),
-  assetUrl: z.string().optional()
+  assetUrl: z.string().optional(),
+  endDate: z.date(),
+  endTime: z.string().min(1, "End time is required.")
 });
 
 interface CreateDebateModalProps {
   isOpen: boolean
   onClose: () => void
 }
-
-const endTime = 1759055054
 
 export default function CreateDebateModal({ isOpen, onClose }: CreateDebateModalProps) {
   const [assetUrl, setAssetUrl] = useState<string>("")
@@ -85,7 +89,28 @@ export default function CreateDebateModal({ isOpen, onClose }: CreateDebateModal
     if (!publicClient) return;
     setIsSubmitting(true)
     try {
-      const { amount } = values
+      const { amount, endDate, endTime: endTimeStr } = values
+      // Build end timestamp in seconds from date + time pickers
+      if (!endDate || !endTimeStr) {
+        toast.error("Please select end date and time")
+        return
+      }
+      const [hourStr, minuteStr] = endTimeStr.split(":")
+      const hours = Number(hourStr)
+      const minutes = Number(minuteStr)
+      if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+        toast.error("Invalid end time format")
+        return
+      }
+      const end = new Date(endDate)
+      end.setHours(hours, minutes, 0, 0)
+      const endSeconds = Math.floor(end.getTime() / 1000)
+      const nowSeconds = Math.floor(Date.now() / 1000)
+      if (endSeconds <= nowSeconds) {
+        toast.error("End time must be in the future")
+        return
+      }
+      const endTime = BigInt(endSeconds)
       const contractAddress = chainToContractAddress[chainId as SupportedChainId]
       let voteFeeWei: bigint = BigInt(0)
       try {
@@ -94,6 +119,7 @@ export default function CreateDebateModal({ isOpen, onClose }: CreateDebateModal
         toast.error("Invalid amount. Use decimals like 0.00001")
         return
       }
+      console.log("endTime", endTime)
       const hash = await writeContractAsync({
         address: contractAddress,
         abi: contract.abi,
@@ -221,6 +247,61 @@ export default function CreateDebateModal({ isOpen, onClose }: CreateDebateModal
                 </FormItem>
               )}
             />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="endDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-foreground">End Date</FormLabel>
+                    <FormControl>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? field.value.toDateString() : <span>Select date</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            className="w-full rounded-md border border-border bg-background p-2 focus:border-ring"
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="endTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-foreground">End Time</FormLabel>
+                    <FormControl>
+                      <TimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Select end time"
+                        className="bg-background border-border focus:border-ring"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="mb-4">
               <label className="text-sm font-semibold text-white block mb-2">Your Initial Vote</label>
