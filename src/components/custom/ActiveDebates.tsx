@@ -11,7 +11,7 @@ const items = [
 
 function ActiveDebate() {
   return (
-    <div className="h-[600px] relative max-w-7xl mx-auto w-full">
+    <div className="relative max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-12">
       <DebateGrid  />
     </div>
   )

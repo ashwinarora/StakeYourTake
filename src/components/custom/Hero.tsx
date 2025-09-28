@@ -51,10 +51,13 @@ function Hero() {
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
                   <h1 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-7xl dark:text-white">
-                    We’re Changing the Way People Debate and Stake
+                    Got a take? Stake it. Put skin in the game, not just words.
                   </h1>
                   <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none dark:text-gray-400">
-                    Put your money where your mouth is. Start a debate, stake, vote, and track live results with optional media—all secured via MetaMask. High-stakes, transparent, gamified Web3 debates.
+                    Pick a side, stake, and submit evidence to back it up.
+                    Settle social discourse on-chain—clear rules, final outcomes, and receipts over outrage.
+                    By attaching a cost to claims, we cut the noise and reward critical thinking.
+                    Win or learn: the market of ideas pays in outcomes, not volume.
                   </p>
                   <div className="mt-10 flex items-center gap-x-6">
                     <button
@@ -107,8 +110,7 @@ function Hero() {
                     <div className="relative">
                       <img
                         alt=""
-                         src="/angry.png"
-                        //src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
+                        src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
                         className="aspect-2/3 w-full rounded-xl bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5"
                       />
                       <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-gray-900/10 ring-inset dark:ring-white/10" />

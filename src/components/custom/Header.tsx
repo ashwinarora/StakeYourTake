@@ -2,8 +2,10 @@
 
 import React from 'react'
 import { useAccount, useConnect, useBalance, useDisconnect } from 'wagmi'
+import { useRouter } from 'next/navigation'
 
 function Header() {
+  const router = useRouter()
   const { address, isConnected, chainId } = useAccount()
   const { connect, connectors, isPending } = useConnect()
   const { disconnect } = useDisconnect()
@@ -18,9 +20,12 @@ function Header() {
       <header className="absolute inset-x-0 top-0 z-50">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
           <div className="flex lg:flex-1 text-white">
-            <a href="#" className="-m-1.5 p-1.5 text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-fuchsia-500 to-rose-500 bg-clip-text text-transparent transition-transform duration-200 hover:scale-105">
+            <button 
+              onClick={() => router.push('/')}
+              className="-m-1.5 p-1.5 text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-fuchsia-500 to-rose-500 bg-clip-text text-transparent transition-transform duration-200 hover:scale-105 cursor-pointer"
+            >
               StakeYourTake          
-            </a>
+            </button>
           </div>
           <div className="flex lg:hidden">
           </div>
