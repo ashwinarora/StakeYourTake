@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useEnsName } from 'wagmi'
-import { mainnet } from 'wagmi/chains'
+import { sepolia } from 'wagmi/chains'
 
 type AddressNameProps = {
   address?: `0x${string}` | string
@@ -19,7 +19,7 @@ export default function AddressName({ address, className, title }: AddressNamePr
   const checksummed = (address || '') as `0x${string}`
   const { data: ensName } = useEnsName({
     address: checksummed,
-    chainId: mainnet.id,
+    chainId: sepolia.id,
     query: { enabled: Boolean(address) },
   })
 
