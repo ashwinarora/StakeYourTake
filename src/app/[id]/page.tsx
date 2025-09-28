@@ -13,12 +13,15 @@ import { CONTRACT_ABI, chainToContractAddress } from '@/constants'
 import { SupportedChainId } from '@/config/wagmi'
 import { formatUnits } from 'viem'
 import { useGetEvidenceByDebateIdPg } from '@/hooks/useGetEvidenceByDebateIdPg'
+import { usePostEvidence } from '@/hooks/usePostEvidence'
+import { FileUploadFull } from '@/components/custom/FileUpload'
 
 export default function DebateDetailPage() {
   const params = useParams()
   console.log(params)
   const [comment, setComment] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+  const [assetUrl, setAssetUrl] = useState<string | undefined>(undefined)
 
   const { data: debateContractData, debates: debatesData, isLoading, error, refetch } = useDebateContractData()
   const debate = debatesData.find(debate => debate.id === Number(params.id))
@@ -97,11 +100,33 @@ export default function DebateDetailPage() {
     }
   }
 
-  const handleCommentSubmit = () => {
-    // Handle comment submission here
-    console.log('Comment:', comment, 'Files:', selectedFiles)
-    setComment('')
-    setSelectedFiles([])
+  const { mutateAsync: postEvidence, isPending: isPostingEvidence } = usePostEvidence()
+
+  const handleCommentSubmit = async () => {
+    if (!debate || !debateContract) {
+      toast.error('Debate not loaded')
+      return
+    }
+    if (!comment.trim()) {
+      toast.error('Please enter a comment')
+      return
+    }
+    try {
+      await postEvidence({
+        debateIdPg: debate.id,
+        debateId: debate.debateId,
+        chainId: debate.chainId as SupportedChainId,
+        content: comment.trim(),
+        assetUrl,
+      })
+      toast.success('Evidence submitted')
+      setComment('')
+      setSelectedFiles([])
+      await refetch()
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Failed to submit evidence'
+      toast.error(message)
+    }
   }
 
   return (
@@ -294,33 +319,15 @@ export default function DebateDetailPage() {
               />
               
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <input
-                    type="file"
-                    multiple
-                    onChange={handleFileUpload}
-                    className="hidden"
-                    id="file-upload"
-                  />
-                  <label
-                    htmlFor="file-upload"
-                    className="cursor-pointer text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                  >
-                    Upload evidence
-                  </label>
-                  
-                  {selectedFiles.length > 0 && (
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {selectedFiles.length} file(s) selected
-                    </span>
-                  )}
+                <div className="flex-1 pr-4">
+                  <FileUploadFull onUploadSuccess={(url) => setAssetUrl(url)} onFileRemove={() => setAssetUrl(undefined)} disabled={isPostingEvidence} />
                 </div>
-                
                 <Button 
                   onClick={handleCommentSubmit}
                   className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                  disabled={isPostingEvidence || isVoting || isLoading || !debate || !debateContract}
                 >
-                  Post Comment
+                  {isPostingEvidence ? 'Submitting...' : 'Post Comment'}
                 </Button>
               </div>
             </div>
