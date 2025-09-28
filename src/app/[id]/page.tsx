@@ -29,7 +29,7 @@ export default function DebateDetailPage() {
   // console.log({debateContractData, debatesData})
   // console.log({debate, debateContract})
 
-  const { data: evidences, isLoading: isEvidenceLoading, isError: isEvidenceError, error: evidenceError } = useGetEvidenceByDebateIdPg(debate?.id)
+  const { data: evidences, isLoading: isEvidenceLoading, isError: isEvidenceError, error: evidenceError, refetch: refetchEvidence } = useGetEvidenceByDebateIdPg(debate?.id)
 
   const { writeContractAsync } = useWriteContract()
   const publicClient = usePublicClient()
@@ -122,7 +122,8 @@ export default function DebateDetailPage() {
       toast.success('Evidence submitted')
       setComment('')
       setSelectedFiles([])
-      await refetch()
+      setAssetUrl(undefined)
+      await refetchEvidence()
     } catch (e) {
       const message = e instanceof Error ? e.message : 'Failed to submit evidence'
       toast.error(message)
