@@ -9,6 +9,7 @@ export type PostDebateInput = {
     description: string
     txHash: Hex
     chainId: SupportedChainId
+    assetUrl?: string
 }
 
 export type Debate = {
@@ -16,7 +17,7 @@ export type Debate = {
     title: string
     description: string
     debateId: number
-    asseturl?: string | null
+    assetUrl?: string | null
     chainId: number
     creationTxHash: string
     createdAt: string

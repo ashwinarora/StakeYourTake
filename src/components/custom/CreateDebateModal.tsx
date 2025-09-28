@@ -105,6 +105,7 @@ export default function CreateDebateModal({ isOpen, onClose }: CreateDebateModal
       await postDebate({
         title: values.title,
         description: values.description,
+        assetUrl: assetUrl || undefined,
         txHash: hash,
         chainId: chainId as SupportedChainId,
       })

@@ -5,7 +5,7 @@ export interface Debate {
   title: string;
   description: string;
   debateId: number;
-  asseturl: string | null;
+  assetUrl: string | null;
   chainId: number;
   creationTxHash: string;
   createdAt: string;

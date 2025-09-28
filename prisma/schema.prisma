@@ -19,7 +19,7 @@ model Debate {
   title          String     @db.VarChar(255)
   description    String     @db.Text
   debateId       Int        @unique
-  asseturl       String?
+  assetUrl       String?
   chainId        Int
   creationTxHash String     @db.VarChar(255)
   createdAt      DateTime   @default(now())

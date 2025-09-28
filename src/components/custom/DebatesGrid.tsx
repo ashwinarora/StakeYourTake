@@ -63,7 +63,7 @@ const DebateGrid: React.FC = () => {
       poster: contractInfo?.creator || 'Unknown',
       question: debate.title,
       stake: contractInfo ? formatAmount(contractInfo.voteFee) : `0 ${nativeAsset}`,
-      url: debate.asseturl || undefined,
+      url: debate.assetUrl || undefined,
       yesPercent,
       noPercent,
       yesPot: contractInfo ? formatAmount(contractInfo.yesPot) : `0 ${nativeAsset}`,

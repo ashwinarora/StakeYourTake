@@ -7,6 +7,7 @@ type CreateDebateParams = {
     debateId: number;
     chainId: SupportedChainId;
     creationTxHash: string;
+    assetUrl?: string;
 }
 
 type CreateEvidenceParams = {
@@ -27,9 +28,9 @@ class DebateManager {
         return DebateManager.instance;
     }
 
-    async createDebate({ title, description, debateId, chainId, creationTxHash }: CreateDebateParams) {
+    async createDebate({ title, description, debateId, chainId, creationTxHash, assetUrl }: CreateDebateParams) {
         return await prisma.debate.create({
-            data: { title, description, debateId, chainId, creationTxHash },
+            data: { title, description, debateId, chainId, creationTxHash, assetUrl },
         });
     }
 

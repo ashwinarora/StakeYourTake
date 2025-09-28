@@ -7,6 +7,7 @@ import { Hex } from "viem";
 type PostDebateBody = {
     title: string;
     description: string;
+    assetUrl?: string;
     txHash: Hex;
     chainId: SupportedChainId;
 }
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
         const body = await request.json().catch(() => null);
         if (!body) return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
 
-        const { title, description, txHash, chainId } = body as PostDebateBody;
+        const { title, description, txHash, chainId, assetUrl } = body as PostDebateBody;
         if (!title || !description || !txHash || chainId === undefined) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
         const dbres = await DebateManager.getInstance().createDebate({
             title,
             description,
+            assetUrl,
             debateId,
             chainId: chainId as SupportedChainId,
             creationTxHash: txHash as Hex,

@@ -18,7 +18,6 @@ import { FileUploadFull } from '@/components/custom/FileUpload'
 
 export default function DebateDetailPage() {
   const params = useParams()
-  console.log(params)
   const [comment, setComment] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [assetUrl, setAssetUrl] = useState<string | undefined>(undefined)
@@ -26,8 +25,8 @@ export default function DebateDetailPage() {
   const { data: debateContractData, debates: debatesData, isLoading, error, refetch } = useDebateContractData()
   const debate = debatesData.find(debate => debate.id === Number(params.id))
   const debateContract = debateContractData.find(d => d.debateId === debate?.debateId)
-  // console.log({debateContractData, debatesData})
-  // console.log({debate, debateContract})
+  console.log({debateContractData, debatesData})
+  console.log({debate, debateContract})
 
   const { data: evidences, isLoading: isEvidenceLoading, isError: isEvidenceError, error: evidenceError, refetch: refetchEvidence } = useGetEvidenceByDebateIdPg(debate?.id)
 
@@ -156,10 +155,10 @@ export default function DebateDetailPage() {
         </div>
 
         {/* Media Section */}
-        {debate?.asseturl && (
+        {debate?.assetUrl && (
           <div className="mb-8">
             <img
-              src={debate.asseturl}
+              src={debate.assetUrl}
               alt={debate.title}
               className="w-full h-96 object-cover rounded-xl shadow-lg"
             />
